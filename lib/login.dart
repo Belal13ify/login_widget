@@ -30,7 +30,7 @@ class _LoginState extends State<Login> {
           content: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                Text('Would you like to login to the App?!'),
+                Text('Are you sure you want to sign in?!'),
               ],
             ),
           ),
