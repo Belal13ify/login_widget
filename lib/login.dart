@@ -12,7 +12,7 @@ class _LoginState extends State<Login> {
   bool secured = true;
 
   SnackBar mySnackBar = SnackBar(
-      duration: Duration(seconds: 8),
+      duration: Duration(seconds: 5),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -56,79 +56,91 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
     return Scaffold(
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Login',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold)),
-            SizedBox(
-              height: 40.0,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextFormField(
-                  decoration: kTextFieldDecoration.copyWith(labelText: 'Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return ('name required');
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 25.0,
-                ),
-                TextFormField(
-                  obscureText: secured,
-                  decoration: kTextFieldDecoration.copyWith(
-                    labelText: 'Password',
-                    prefixIcon: Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          secured = !secured;
-                        });
-                      },
-                      icon: Icon(
-                        secured ? Icons.visibility_sharp : Icons.visibility_off,
-                        color: Colors.blue,
-                        size: 22,
+          child: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Login',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold)),
+              SizedBox(
+                height: 40.0,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextFormField(
+                    decoration:
+                        kTextFieldDecoration.copyWith(labelText: 'Name'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return ('name required');
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 25.0,
+                  ),
+                  TextFormField(
+                    obscureText: secured,
+                    decoration: kTextFieldDecoration.copyWith(
+                      labelText: 'Password',
+                      prefixIcon: Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            secured = !secured;
+                          });
+                        },
+                        icon: Icon(
+                          secured
+                              ? Icons.visibility_sharp
+                              : Icons.visibility_off,
+                          color: Colors.blue,
+                          size: 22,
+                        ),
                       ),
                     ),
+                    keyboardType: TextInputType.visiblePassword,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return ('password required');
+                      }
+                      return null;
+                    },
                   ),
-                  keyboardType: TextInputType.visiblePassword,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return ('password required');
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.orange,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                    ),
-                    onPressed: () => openAlert(),
-                    child: Text(
-                      'Login',
-                      style: TextStyle(fontSize: 20),
-                    ))
-              ],
-            ),
-          ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.orange,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                      ),
+                      onPressed: () {
+                        if (!_formKey.currentState!.validate()) {
+                          return;
+                        }
+                        openAlert();
+                      },
+                      child: Text(
+                        'Login',
+                        style: TextStyle(fontSize: 20),
+                      ))
+                ],
+              ),
+            ],
+          ),
         ),
       )),
     );
